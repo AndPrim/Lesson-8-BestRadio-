@@ -2,7 +2,8 @@ package ru.netology.radio;
 
 public class Radio {
 
-    int currentRadioStation;
+    private int currentRadioStation;
+    private int soundVolumeLevel;
 
     public int getCurrentRadioStation() {
         return currentRadioStation;
@@ -14,8 +15,6 @@ public class Radio {
         }
         currentRadioStation = newCurrentRadioStation;
     }
-
-    int soundVolumeLevel;
 
     public int getSoundVolumeLevel() {
         return soundVolumeLevel;
