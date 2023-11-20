@@ -1,35 +1,46 @@
 package ru.netology.radio;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor
+@AllArgsConstructor
+@Data
 public class Radio {
 
+    private int countRadioStation = 10;
+    private int minRadioStation = 0;
+    private int maxRadioStation = minRadioStation + (countRadioStation - 1);
     private int currentRadioStation;
+    private int minVolume = 0;
+    private int maxVolume = 100;
     private int soundVolumeLevel;
 
-    public int getCurrentRadioStation() {
-        return currentRadioStation;
-    }
 
     public void setCurrentRadioStation(int newCurrentRadioStation) {
-        if (newCurrentRadioStation < 0 || newCurrentRadioStation > 9) {
+        if (newCurrentRadioStation < minRadioStation || newCurrentRadioStation > maxRadioStation) {
             return;
         }
         currentRadioStation = newCurrentRadioStation;
     }
 
-    public int getSoundVolumeLevel() {
-        return soundVolumeLevel;
-    }
 
     public void setSoundVolumeLevel(int newSoundVolumeLevel) {
-        if (newSoundVolumeLevel < 0 || newSoundVolumeLevel > 100) {
+        if (newSoundVolumeLevel < minVolume || newSoundVolumeLevel > maxVolume) {
             return;
         }
         soundVolumeLevel = newSoundVolumeLevel;
     }
 
+    public Radio(int countRadioStation){
+        this.countRadioStation = countRadioStation;
+    }
+
+
     public void nextStation() {
-        if (currentRadioStation == 9) {
-            currentRadioStation = 0;
+        if (currentRadioStation == maxRadioStation) {
+            currentRadioStation = minRadioStation;
         } else {
             currentRadioStation++;
         }
@@ -37,15 +48,15 @@ public class Radio {
     }
 
     public void prevStation() {
-        if (currentRadioStation == 0) {
-            currentRadioStation = 9;
+        if (currentRadioStation == minRadioStation) {
+            currentRadioStation = maxRadioStation;
         } else {
             currentRadioStation--;
         }
     }
 
     public void increaseVolumeLevel() {
-        if (soundVolumeLevel == 100) {
+        if (soundVolumeLevel == maxVolume) {
             return;
         } else {
             soundVolumeLevel++;
@@ -53,7 +64,7 @@ public class Radio {
     }
 
     public void decreaseVolumeLevel() {
-        if (soundVolumeLevel == 0) {
+        if (soundVolumeLevel == minVolume) {
             return;
         } else {
             soundVolumeLevel--;
