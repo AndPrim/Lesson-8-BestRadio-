@@ -6,12 +6,13 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class RadioTest {
+    Radio service = new Radio(20);
+
     @Test
     void factCurrentRadioStation() {
-        Radio service = new Radio();
-        service.setCurrentRadioStation(5);
+        service.setCurrentRadioStation(15);
 
-        int expected = 5;
+        int expected = 15;
         int actual = service.getCurrentRadioStation();
 
         Assertions.assertEquals(expected, actual);
@@ -19,8 +20,7 @@ class RadioTest {
 
     @Test
     void factCurrentRadioStationTooBig() {
-        Radio service = new Radio();
-        service.setCurrentRadioStation(10);
+        service.setCurrentRadioStation(service.getMaxRadioStation() + 1);
 
         int expected = 0;
         int actual = service.getCurrentRadioStation();
@@ -30,8 +30,7 @@ class RadioTest {
 
     @Test
     void factCurrentRadioStationLessThanNormal() {
-        Radio service = new Radio();
-        service.setCurrentRadioStation(-1);
+        service.setCurrentRadioStation(service.getMinRadioStation() - 1);
 
         int expected = 0;
         int actual = service.getCurrentRadioStation();
@@ -42,7 +41,6 @@ class RadioTest {
 
     @Test
     void factSoundVolumeLevel() {
-        Radio service = new Radio();
         service.setSoundVolumeLevel(10);
 
         int expected = 10;
@@ -53,8 +51,7 @@ class RadioTest {
 
     @Test
     void factSoundVolumeLevelBig() {
-        Radio service = new Radio();
-        service.setSoundVolumeLevel(100);
+        service.setSoundVolumeLevel(service.getMaxVolume());
 
         int expected = 100;
         int actual = service.getSoundVolumeLevel();
@@ -64,8 +61,7 @@ class RadioTest {
 
     @Test
     void factSoundVolumeLevelTooBig() {
-        Radio service = new Radio();
-        service.setSoundVolumeLevel(101);
+        service.setSoundVolumeLevel(service.getMaxVolume() + 1);
 
         int expected = 0;
         int actual = service.getSoundVolumeLevel();
@@ -75,8 +71,7 @@ class RadioTest {
 
     @Test
     void factSoundVolumeLevelLessThanNormal() {
-        Radio service = new Radio();
-        service.setSoundVolumeLevel(-1);
+        service.setSoundVolumeLevel(service.getMinVolume() - 1);
 
         int expected = 0;
         int actual = service.getSoundVolumeLevel();
@@ -86,8 +81,7 @@ class RadioTest {
 
     @Test
     void factSoundVolumeLevelMini() {
-        Radio service = new Radio();
-        service.setSoundVolumeLevel(0);
+        service.setSoundVolumeLevel(service.getMinVolume());
 
         int expected = 0;
         int actual = service.getSoundVolumeLevel();
@@ -96,9 +90,8 @@ class RadioTest {
     }
 
     @Test
-    void nextStationNormal1() {
-        Radio service = new Radio();
-        service.setCurrentRadioStation(0);
+    void nextStationMini() {
+        service.setCurrentRadioStation(service.getMinRadioStation());
 
         service.nextStation();
 
@@ -109,13 +102,24 @@ class RadioTest {
     }
 
     @Test
-    void nextStationNormal8() {
-        Radio service = new Radio();
-        service.setCurrentRadioStation(8);
+    void nextStationNormal6() {
+        service.setCurrentRadioStation(12);
 
         service.nextStation();
 
-        int expected = 9;
+        int expected = 13;
+        int actual = service.getCurrentRadioStation();
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void nextStationNormalMax() {
+        service.setCurrentRadioStation(service.getMaxRadioStation() - 1);
+
+        service.nextStation();
+
+        int expected = service.getMaxRadioStation();
         int actual = service.getCurrentRadioStation();
 
         Assertions.assertEquals(expected, actual);
@@ -123,38 +127,47 @@ class RadioTest {
 
     @Test
     void nextStationMax() {
-        Radio service = new Radio();
-        service.setCurrentRadioStation(9);
+        service.setCurrentRadioStation(service.getMaxRadioStation());
 
         service.nextStation();
 
-        int expected = 0;
+        int expected = service.getMinRadioStation();
         int actual = service.getCurrentRadioStation();
 
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    void prevStationNormal9() {
-        Radio service = new Radio();
-        service.setCurrentRadioStation(9);
+    void prevStationNormalMax() {
+        service.setCurrentRadioStation(service.getMaxRadioStation());
 
         service.prevStation();
 
-        int expected = 8;
+        int expected = service.getMaxRadioStation() - 1;
         int actual = service.getCurrentRadioStation();
 
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    void prevStationNormal1() {
-        Radio service = new Radio();
+    void prevStationNormal6() {
+        service.setCurrentRadioStation(6);
+
+        service.prevStation();
+
+        int expected = 5;
+        int actual = service.getCurrentRadioStation();
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void prevStationNormalMini() {
         service.setCurrentRadioStation(1);
 
         service.prevStation();
 
-        int expected = 0;
+        int expected = service.getMinRadioStation();
         int actual = service.getCurrentRadioStation();
 
         Assertions.assertEquals(expected, actual);
@@ -162,12 +175,11 @@ class RadioTest {
 
     @Test
     void prevStationMini() {
-        Radio service = new Radio();
-        service.setCurrentRadioStation(0);
+        service.setCurrentRadioStation(service.getMinRadioStation());
 
         service.prevStation();
 
-        int expected = 9;
+        int expected = service.getMaxRadioStation();
         int actual = service.getCurrentRadioStation();
 
         Assertions.assertEquals(expected, actual);
@@ -175,12 +187,11 @@ class RadioTest {
 
     @Test
     void increaseTheSoundMax() {
-        Radio service = new Radio();
-        service.setSoundVolumeLevel(100);
+        service.setSoundVolumeLevel(service.getMaxVolume());
 
         service.increaseVolumeLevel();
 
-        int expected = 100;
+        int expected = service.getMaxVolume();
         int actual = service.getSoundVolumeLevel();
 
         Assertions.assertEquals(expected, actual);
@@ -188,8 +199,7 @@ class RadioTest {
 
     @Test
     void increaseTheSoundNormal0() {
-        Radio service = new Radio();
-        service.setSoundVolumeLevel(0);
+        service.setSoundVolumeLevel(service.getMinVolume());
 
         service.increaseVolumeLevel();
 
@@ -200,13 +210,24 @@ class RadioTest {
     }
 
     @Test
-    void increaseTheSoundNormal99() {
-        Radio service = new Radio();
+    void increaseTheSoundNormalMax() {
         service.setSoundVolumeLevel(99);
 
         service.increaseVolumeLevel();
 
-        int expected = 100;
+        int expected = service.getMaxVolume();
+        int actual = service.getSoundVolumeLevel();
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void increaseTheSoundNormal55() {
+        service.setSoundVolumeLevel(55);
+
+        service.increaseVolumeLevel();
+
+        int expected = 56;
         int actual = service.getSoundVolumeLevel();
 
         Assertions.assertEquals(expected, actual);
@@ -214,21 +235,19 @@ class RadioTest {
 
     @Test
     void soundReductionMini() {
-        Radio service = new Radio();
-        service.setSoundVolumeLevel(0);
+        service.setSoundVolumeLevel(service.getMinVolume());
 
         service.decreaseVolumeLevel();
 
-        int expected = 0;
+        int expected = service.getMinVolume();
         int actual = service.getSoundVolumeLevel();
 
         Assertions.assertEquals(expected, actual);
     }
 
     @Test
-    void soundReductionNormal100() {
-        Radio service = new Radio();
-        service.setSoundVolumeLevel(100);
+    void soundReductionNormalMax() {
+        service.setSoundVolumeLevel(service.getMaxVolume());
 
         service.decreaseVolumeLevel();
 
@@ -239,13 +258,100 @@ class RadioTest {
     }
 
     @Test
-    void soundReductionNormal1() {
-        Radio service = new Radio();
+    void soundReductionNormalMini() {
         service.setSoundVolumeLevel(1);
 
         service.decreaseVolumeLevel();
 
+        int expected = service.getMinVolume();
+        int actual = service.getSoundVolumeLevel();
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void soundReductionNormal55() {
+        service.setSoundVolumeLevel(55);
+
+        service.decreaseVolumeLevel();
+
+        int expected = 54;
+        int actual = service.getSoundVolumeLevel();
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void factCurrentRadioStationTooBigByDefault() {
+        Radio service = new Radio();
+        service.setCurrentRadioStation(service.getMaxRadioStation() + 1);
+
         int expected = 0;
+        int actual = service.getCurrentRadioStation();
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void nextStationNormalMaxByDefault() {
+        Radio service = new Radio();
+        service.setCurrentRadioStation(service.getMaxRadioStation() - 1);
+
+        service.nextStation();
+
+        int expected = service.getMaxRadioStation();
+        int actual = service.getCurrentRadioStation();
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void nextStationMaxByDefault() {
+        Radio service = new Radio();
+        service.setCurrentRadioStation(service.getMaxRadioStation());
+
+        service.nextStation();
+
+        int expected = service.getMinRadioStation();
+        int actual = service.getCurrentRadioStation();
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void prevStationNormalMaxByDefault() {
+        Radio service = new Radio();
+        service.setCurrentRadioStation(service.getMaxRadioStation());
+
+        service.prevStation();
+
+        int expected = service.getMaxRadioStation() - 1;
+        int actual = service.getCurrentRadioStation();
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void prevStationMiniByDefault() {
+        Radio service = new Radio();
+        service.setCurrentRadioStation(service.getMinRadioStation());
+
+        service.prevStation();
+
+        int expected = service.getMaxRadioStation();
+        int actual = service.getCurrentRadioStation();
+
+        Assertions.assertEquals(expected, actual);
+    }
+
+    @Test
+    void increaseTheSoundMaxByDefault() {
+        Radio service = new Radio();
+        service.setSoundVolumeLevel(service.getMaxVolume());
+
+        service.increaseVolumeLevel();
+
+        int expected = service.getMaxVolume();
         int actual = service.getSoundVolumeLevel();
 
         Assertions.assertEquals(expected, actual);
