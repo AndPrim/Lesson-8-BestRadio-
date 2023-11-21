@@ -10,9 +10,9 @@ class RadioTest {
 
     @Test
     void factCurrentRadioStation() {
-        service.setCurrentRadioStation(5);
+        service.setCurrentRadioStation(15);
 
-        int expected = 5;
+        int expected = 15;
         int actual = service.getCurrentRadioStation();
 
         Assertions.assertEquals(expected, actual);
@@ -103,11 +103,11 @@ class RadioTest {
 
     @Test
     void nextStationNormal6() {
-        service.setCurrentRadioStation(6);
+        service.setCurrentRadioStation(12);
 
         service.nextStation();
 
-        int expected = 7;
+        int expected = 13;
         int actual = service.getCurrentRadioStation();
 
         Assertions.assertEquals(expected, actual);
