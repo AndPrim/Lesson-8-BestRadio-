@@ -280,6 +280,7 @@ class RadioTest {
 
         Assertions.assertEquals(expected, actual);
     }
+
     @Test
     void factCurrentRadioStationTooBigByDefault() {
         Radio service = new Radio();
@@ -290,6 +291,7 @@ class RadioTest {
 
         Assertions.assertEquals(expected, actual);
     }
+
     @Test
     void nextStationNormalMaxByDefault() {
         Radio service = new Radio();
@@ -315,6 +317,7 @@ class RadioTest {
 
         Assertions.assertEquals(expected, actual);
     }
+
     @Test
     void prevStationNormalMaxByDefault() {
         Radio service = new Radio();
@@ -353,7 +356,6 @@ class RadioTest {
 
         Assertions.assertEquals(expected, actual);
     }
-
 
 
 }

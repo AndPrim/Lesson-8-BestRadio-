@@ -10,6 +10,14 @@ public class Radio {
     private int maxVolume = 100;
     private int soundVolumeLevel;
 
+    public Radio() {
+
+    }
+
+    public Radio(int countRadioStation) {
+        this.countRadioStation = countRadioStation;
+    }
+
     public int getMinRadioStation() {
         return minRadioStation;
     }
@@ -46,12 +54,6 @@ public class Radio {
             return;
         }
         soundVolumeLevel = newSoundVolumeLevel;
-    }
-    public Radio(){
-
-    }
-    public Radio(int countRadioStation){
-        this.countRadioStation = countRadioStation;
     }
 
 
